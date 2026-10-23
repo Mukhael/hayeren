@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://telegram.org/js/telegram-web-app.js?64"></script>
+<title>Hayeren — армянский шаг за шагом</title>
+<style>
+:root {
+  --site-primary: #7451d6;
+  --site-secondary: #eee9ff;
+  --site-background: #f8f7fb;
+  --site-on-primary: #ffffff;
+  --site-on-secondary: #34235f;
+  --site-on-background: #211d2d;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+#app { min-height: 100vh; width: 100%; border-radius: 0; background-color: var(--site-background); color: var(--site-on-background); }
+button, input { font: inherit; }
+button { cursor: pointer; }
+.topbar { position: sticky; top: 0; z-index: 20; background: light-dark(#ffffff, #191720); border-bottom: 1px solid light-dark(#e9e5f0, #35313f); box-shadow: 0 5px 20px #1b13300a; }
+.top-inner { max-width: 1160px; margin: auto; padding: calc(14px * var(--site-spacing-scale)) 24px; display: flex; align-items: center; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 165px; }
+.brandmark { display:grid; place-items:center; width:40px; height:40px; border-radius: calc(13px * var(--site-radius-scale)); background: var(--site-primary); color: var(--site-on-primary); font-size: 24px; font-weight: 800; }
+.brand-name { font-family: var(--site-font-heading); font-size: calc(19px * var(--site-heading-scale)); font-weight: 800; letter-spacing: -.5px; }
+.brand-sub { font-size: 11px; color: light-dark(#817b8f, #b0a9c0); margin-top: 1px; }
+.letter-panel { flex: 1; min-width: 0; display:flex; align-items:center; gap: 14px; padding: 9px 13px; border: 1px solid light-dark(#e4dcfa, #49405d); background: light-dark(#faf8ff, #24202f); border-radius: calc(15px * var(--site-radius-scale)); }
+.current-letter { width: 44px; height: 44px; display:grid; place-items:center; flex-shrink:0; background: var(--site-secondary); color: var(--site-on-secondary); border-radius: calc(11px * var(--site-radius-scale)); font-size: 24px; font-weight: 800; }
+.letter-info { flex:1; min-width:0; }
+.eyebrow { font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: light-dark(#827991, #b5abc9); font-weight: 800; }
+.letter-title { font-size: 13px; font-weight: 750; margin: 3px 0 7px; }
+.learned { display:flex; gap:5px; flex-wrap:wrap; }
+.letter-chip { min-width:25px; height:25px; padding:0 6px; display:grid; place-items:center; border-radius:7px; background: light-dark(#eee9ff, #3b3155); color: light-dark(#6240c5, #d8caff); font-size:13px; font-weight:700; }
+.letter-chip.current { background: var(--site-primary); color: white; }
+.avatar { width:40px; height:40px; flex-shrink:0; border-radius:50%; display:grid; place-items:center; background: light-dark(#f0eaff, #302641); color: light-dark(#6846c6, #d9caff); font-weight:800; border:0; }
+.layout { max-width:1160px; margin:0 auto; padding:30px 24px 60px; display:grid; grid-template-columns:220px minmax(0,1fr); gap:25px; }
+.sidebar { display:flex; flex-direction:column; gap:7px; }
+.nav-label { font-size:10px; text-transform:uppercase; letter-spacing:1.3px; font-weight:800; color:light-dark(#958da2,#9e96ae); padding:15px 12px 7px; }
+.nav-item { border:0; width:100%; text-align:left; padding:12px 13px; border-radius: calc(12px * var(--site-radius-scale)); background:transparent; color:light-dark(#625b70,#c5bfd0); display:flex; align-items:center; gap:11px; font-weight:650; font-size:14px; }
+.nav-item:hover { background:light-dark(#f0ecf9,#282432); }
+.nav-item.active { background:var(--site-secondary); color:var(--site-on-secondary); }
+.nav-icon { width:23px; text-align:center; font-size:17px; }
+.side-card { margin-top:22px; border-radius:calc(17px * var(--site-radius-scale)); padding:17px; background:var(--site-primary); color:white; position:relative; overflow:hidden; }
+.side-card:after { content:"ա"; position:absolute; right:-4px; bottom:-30px; font-size:105px; opacity:calc(.12 * var(--site-decoration-opacity)); font-weight:800; }
+.side-card h3 { margin:0 0 7px; font-size:15px; position:relative; z-index:1; }
+.side-card p { font-size:12px; line-height:1.5; opacity:.87; margin:0 0 14px; position:relative; z-index:1; }
+.side-card button { background:white; color:#5738b2; border:0; border-radius:9px; padding:9px 11px; font-weight:750; font-size:12px; position:relative; z-index:1; }
+main { min-width:0; }
+.page { display:none; animation:fade .2s ease; }
+.page.active { display:block; }
+@keyframes fade { from {opacity:.45; transform:translateY(4px)} to {opacity:1; transform:translateY(0)} }
+.welcome { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin:5px 0 24px; }
+h1,h2,h3,p { margin-top:0; }
+h1 { font-family:var(--site-font-heading); font-size:calc(32px * var(--site-heading-scale)); letter-spacing:-1.2px; line-height:1.15; margin-bottom:10px; }
+h2 { font-size:calc(22px * var(--site-heading-scale)); letter-spacing:-.5px; margin-bottom:7px; }
+.subtext { color:light-dark(#777084,#b7b0c3); line-height:1.6; font-size:14px; margin-bottom:0; }
+.tag { display:inline-flex; align-items:center; gap:6px; border-radius:99px; padding:7px 10px; background:light-dark(#eee9ff,#332847); color:light-dark(#6746c3,#d9caff); font-size:11px; font-weight:800; white-space:nowrap; }
+.hero { border-radius:calc(24px * var(--site-radius-scale)); padding:30px; color:white; background:linear-gradient(115deg,#6542c4,#8b6be8); position:relative; overflow:hidden; display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:center; }
+.hero:after { content:"Հայերեն"; position:absolute; right:10px; bottom:-23px; font-size:86px; letter-spacing:-5px; font-weight:900; opacity:calc(.08 * var(--site-decoration-opacity)); pointer-events:none; }
+.hero h2 { font-size:27px; line-height:1.2; max-width:400px; margin:12px 0; position:relative; z-index:1; }
+.hero p { font-size:13px; line-height:1.65; max-width:390px; opacity:.88; position:relative; z-index:1; }
+.hero .primary-btn { background:white; color:#5838b6; position:relative; z-index:1; }
+.hero-art { min-height:155px; display:grid; place-items:center; position:relative; z-index:1; }
+.glyph { width:156px; height:156px; border:1px solid #ffffff50; background:#ffffff18; backdrop-filter:blur(5px); border-radius:37px; display:grid; place-items:center; font-size:100px; font-weight:800; transform:rotate(5deg); box-shadow:0 15px 40px #2d176b30; }
+.primary-btn,.secondary-btn,.quiet-btn { border:0; border-radius:calc(12px * var(--site-radius-scale)); padding:12px 17px; font-size:13px; font-weight:800; transition:transform .15s,opacity .15s; }
+.primary-btn { background:var(--site-primary); color:var(--site-on-primary); }
+.secondary-btn { background:var(--site-secondary); color:var(--site-on-secondary); }
+.quiet-btn { background:light-dark(#f3f0f8,#2a2634); color:light-dark(#625b70,#d3ccdf); }
+.primary-btn:hover,.secondary-btn:hover,.quiet-btn:hover { transform:translateY(-1px); }
+.section-head { display:flex; justify-content:space-between; align-items:center; gap:15px; margin:29px 0 14px; }
+.section-head h2 { font-size:19px; margin:0; }
+.text-link { border:0; background:transparent; color:light-dark(#7251d3,#c5b5ff); font-weight:750; font-size:12px; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; margin-top:18px; }
+.stat { background:light-dark(#fff,#1d1b24); border:1px solid light-dark(#eae6f1,#36313f); border-radius:calc(16px * var(--site-radius-scale)); padding:17px; }
+.stat-top { display:flex; justify-content:space-between; align-items:center; color:light-dark(#81798e,#b2a9c2); font-size:12px; }
+.stat-number { font-size:26px; font-weight:850; letter-spacing:-.7px; margin:12px 0 3px; }
+.stat-note { color:light-dark(#8d8599,#aaa2b6); font-size:11px; }
+.course-list { display:grid; grid-template-columns:repeat(2,1fr); gap:13px; }
+.course { background:light-dark(#fff,#1d1b24); border:1px solid light-dark(#eae6f1,#36313f); border-radius:calc(17px * var(--site-radius-scale)); padding:17px; }
+.course-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.course-icon { display:grid; place-items:center; width:40px; height:40px; background:var(--site-secondary); color:var(--site-on-secondary); border-radius:12px; font-size:21px; font-weight:800; }
+.course h3 { font-size:15px; margin:15px 0 6px; }
+.course p { font-size:12px; line-height:1.5; color:light-dark(#80788e,#b5aec2); min-height:36px; margin-bottom:13px; }
+.progress { height:6px; border-radius:99px; background:light-dark(#eeeaf4,#393342); overflow:hidden; }
+.progress > span { display:block; height:100%; background:var(--site-primary); border-radius:99px; }
+.course-foot { display:flex; align-items:center; justify-content:space-between; font-size:11px; color:light-dark(#8d8599,#aaa2b6); margin-top:9px; }
+.card { background:light-dark(#fff,#1d1b24); border:1px solid light-dark(#eae6f1,#36313f); border-radius:calc(19px * var(--site-radius-scale)); padding:22px; }
+.reading-layout { display:grid; grid-template-columns:minmax(0,1fr) 245px; gap:15px; }
+.reading-card { text-align:center; padding:28px 22px; }
+.reading-word { font-size:clamp(30px,5vw,48px); line-height:1.4; font-weight:800; letter-spacing:.4px; overflow-wrap:anywhere; margin:26px 0 10px; }
+.reading-word .changed { color:var(--site-primary); }
+.reading-translation { font-size:13px; color:light-dark(#80788e,#b5aec2); margin-bottom:23px; }
+.reading-controls { display:flex; gap:9px; justify-content:center; flex-wrap:wrap; }
+.reading-side h3 { font-size:15px; margin-bottom:8px; }
+.reading-side p { font-size:12px; line-height:1.55; color:light-dark(#80788e,#b5aec2); }
+.letter-big { width:68px; height:68px; display:grid; place-items:center; margin:10px auto 14px; background:var(--site-secondary); color:var(--site-on-secondary); border-radius:19px; font-size:40px; font-weight:850; }
+.reading-step { color:light-dark(#8c849a,#aaa1b5); font-size:11px; margin-bottom:10px; }
+.notice { padding:12px 14px; border-radius:12px; background:light-dark(#f6f2ff,#2b2439); color:light-dark(#6d50b6,#d4c7ff); font-size:12px; line-height:1.5; margin-top:16px; }
+.alphabet-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:9px; margin-top:18px; }
+.alphabet-item { border:1px solid light-dark(#e8e3f0,#393342); background:light-dark(#fff,#1d1b24); border-radius:13px; min-height:92px; padding:9px 5px; text-align:center; color:inherit; }
+.alphabet-item .hy { display:block; font-size:25px; font-weight:850; color:light-dark(#7050cc,#c9b7ff); }
+.alphabet-item .ru { display:block; font-size:11px; margin-top:4px; color:light-dark(#8b8398,#b3abc0); }
+.alphabet-item.learned { border-color:light-dark(#b7a4ef,#6e57a8); background:light-dark(#f7f3ff,#292239); }
+.alphabet-item.selected { outline:2px solid var(--site-primary); outline-offset:1px; }
+.profile-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.profile-field { margin:14px 0; }
+.profile-field label { display:block; font-size:12px; font-weight:750; margin-bottom:7px; }
+.profile-field input { width:100%; border:1px solid light-dark(#ded8e9,#413a4c); border-radius:10px; padding:12px; background:light-dark(#fff,#191720); color:inherit; }
+.subscription-card { max-width:650px; margin:0 auto; padding:30px; border-radius:23px; border:1px solid light-dark(#ded4fa,#4b3d67); background:light-dark(#fff,#1d1b24); }
+.price { font-size:43px; font-weight:900; letter-spacing:-1.5px; margin:16px 0 4px; }
+.price small { font-size:14px; font-weight:600; color:light-dark(#81798e,#b2a9c2); letter-spacing:0; }
+.feature-list { list-style:none; padding:0; margin:22px 0; display:grid; gap:12px; }
+.feature-list li { display:flex; gap:10px; font-size:13px; align-items:flex-start; }
+.check { color:#6cbe91; font-weight:900; }
+.subscription-actions { display:flex; flex-wrap:wrap; gap:10px; }
+.demo-label { font-size:11px; color:light-dark(#8b8398,#b3abc0); line-height:1.5; margin-top:14px; }
+.settings-row { display:flex; justify-content:space-between; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid light-dark(#ece8f2,#383340); }
+.settings-row:last-child { border-bottom:0; }
+.settings-row strong { display:block; font-size:13px; }
+.settings-row small { display:block; margin-top:4px; color:light-dark(#8b8398,#b3abc0); font-size:11px; }
+.switch { width:44px; height:25px; border-radius:99px; border:0; background:var(--site-primary); padding:3px; flex-shrink:0; }
+.switch span { display:block; width:19px; height:19px; border-radius:50%; background:#fff; transform:translateX(19px); transition:transform .2s; }
+.switch.off { background:light-dark(#d8d2e2,#514a5c); }
+.switch.off span { transform:translateX(0); }
+.footer { text-align:center; font-size:11px; color:light-dark(#a19aaa,#938ba1); margin-top:35px; }
+.toast { position:fixed; z-index:50; bottom:22px; left:50%; transform:translate(-50%,20px); opacity:0; pointer-events:none; background:light-dark(#262032,#f2ecff); color:light-dark(#fff,#2b2044); padding:12px 17px; border-radius:12px; font-size:13px; box-shadow:0 10px 30px #0002; transition:.2s; }
+.toast.show { opacity:1; transform:translate(-50%,0); }
+@media (prefers-color-scheme: dark) {
+  :root { --site-background:#15131b; --site-on-background:#f1edf8; --site-secondary:#302541; --site-on-secondary:#dfd2ff; }
+}
+@media (max-width:850px) {
+  .top-inner { padding:12px 15px; gap:10px; flex-wrap:wrap; }
+  .brand { min-width:unset; }
+  .brand-sub { display:none; }
+  .letter-panel { order:3; flex-basis:100%; }
+  .avatar { margin-left:auto; }
+  .layout { grid-template-columns:1fr; padding:20px 15px 45px; gap:18px; }
+  .sidebar { flex-direction:row; overflow-x:auto; gap:5px; padding-bottom:3px; }
+  .nav-label,.side-card { display:none; }
+  .nav-item { width:auto; white-space:nowrap; padding:10px 12px; font-size:12px; }
+  .nav-icon { display:none; }
+  .hero { padding:23px; grid-template-columns:1fr; }
+  .hero-art { display:none; }
+  .reading-layout { grid-template-columns:1fr; }
+  .alphabet-grid { grid-template-columns:repeat(5,1fr); }
+}
+@media (max-width:520px) {
+  h1 { font-size:27px; }
+  .welcome { display:block; }
+  .welcome .tag { margin-top:12px; }
+  .stats { grid-template-columns:1fr 1fr; }
+  .stat:last-child { grid-column:span 2; }
+  .course-list,.profile-grid { grid-template-columns:1fr; }
+  .alphabet-grid { grid-template-columns:repeat(4,1fr); }
+  .hero h2 { font-size:24px; }
+  .card { padding:17px; }
+  .subscription-card { padding:22px; }
+}
+
+.reading-lesson-meta { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.sentence-text { font-size:clamp(24px,3.6vw,36px); line-height:1.7; font-weight:750; letter-spacing:0; margin:24px auto 14px; max-width:720px; }
+.sentence-text .changed { display:inline; border-radius:5px; background:light-dark(#eee8ff,#3b2c55); color:var(--site-primary); padding:0 1px; }
+.sentence-extra { text-align:left; margin:20px auto 0; max-width:720px; border:1px solid light-dark(#e4dcfa,#49405d); border-radius:16px; padding:18px; background:light-dark(#fcfaff,#211c2b); }
+.armenian-line { font-size:clamp(23px,3vw,31px); line-height:1.6; font-weight:750; margin:10px 0 18px; color:light-dark(#5e3cbd,#c7b5ff); }
+.translation-line { border-top:1px solid light-dark(#e9e3f3,#393342); padding-top:14px; font-size:13px; }
+.translation-line p,.quiz-prompt p { margin:5px 0 0; color:light-dark(#746c81,#b9b1c6); line-height:1.55; }
+.quiz-prompt { margin-top:14px; padding:12px; border-radius:11px; background:light-dark(#f0ecfb,#2b2439); font-size:13px; }
+.sentence-side-progress { margin-top:20px; padding-top:15px; border-top:1px solid light-dark(#e9e5f0,#35313f); font-size:12px; }
+.poem-card { max-width:850px; margin:0 auto; padding:clamp(22px,5vw,42px); }
+.poem-text { white-space:pre-line; font-family:Georgia,'Times New Roman',serif; font-size:clamp(18px,2.5vw,23px); line-height:1.9; text-align:center; overflow-wrap:anywhere; }
+.poem-stanza { margin:0 0 22px; }
+
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="top-inner">
+      <div class="brand">
+        <div class="brandmark" aria-hidden="true">H</div>
+        <div><div class="brand-name">Hayeren</div><div class="brand-sub">Армянский шаг за шагом</div></div>
+      </div>
+      <div class="letter-panel" aria-label="Текущая и изученные буквы">
+        <div class="current-letter" id="currentGlyph">ա</div>
+        <div class="letter-info">
+          <div class="eyebrow" data-translit="true">Текущая буква</div>
+          <div class="letter-title" id="currentLetterTitle">А → ա · звук «а»</div>
+          <div class="learned" id="learnedLetters"></div>
+        </div>
+      </div>
+      <button class="avatar" aria-label="Открыть профиль" onclick="navigate('profile')">V</button>
+    </div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="nav-label" data-translit="true">Обучение</div>
+      <button class="nav-item active" data-page="home" onclick="navigate('home')"><span class="nav-icon">⌂</span><span data-translit="true">Главная</span></button>
+      <button class="nav-item" data-page="reading" onclick="navigate('reading')"><span class="nav-icon">Aa</span><span data-translit="true">Чтение</span></button>
+      <button class="nav-item" data-page="alphabet" onclick="navigate('alphabet')"><span class="nav-icon">ա</span><span data-translit="true">Алфавит</span></button>
+      <div class="nav-label" data-translit="true">Аккаунт</div>
+      <button class="nav-item" data-page="profile" onclick="navigate('profile')"><span class="nav-icon">◉</span><span data-translit="true">Личный кабинет</span></button>
+      <button class="nav-item" data-page="subscription" onclick="navigate('subscription')"><span class="nav-icon">✧</span><span data-translit="true">Подписка</span></button>
+      <button class="nav-item" data-page="settings" onclick="navigate('settings')"><span class="nav-icon">⚙</span><span data-translit="false">Настройки</span></button>
+      <div class="side-card">
+        <h3 data-translit="true">Открой весь курс</h3>
+        <p data-translit="true">Все буквы, тексты и упражнения с подпиской Hayeren Premium.</p>
+        <button onclick="navigate('subscription')" data-translit="false">Посмотреть подписку</button>
+      </div>
+    </aside>
+    <main>
+      <section class="page active" id="page-home">
+        <div class="welcome"><div><div class="eyebrow" data-translit="true">ТВОЙ ПРОГРЕСС</div><h1 data-translit="true">Привет, Валя! Продолжим?</h1><p class="subtext" data-translit="true">Понемногу каждый день — и армянские буквы станут привычными.</p></div><span class="tag">✦ <span data-translit="true">Твой учебный кабинет</span></span></div>
+        <div class="hero">
+          <div><span class="tag" style="background:#ffffff22;color:#fff" data-translit="true">39 БУКВ · 39 МИНИ-УРОКОВ</span><h2 data-translit="true">От первой буквы до армянского стихотворения</h2><p data-translit="true">Каждая буква — отдельный мини-урок, поэтическая строка, тренировка в контексте и короткая проверка. Уже изученные буквы постепенно появляются в русских строках армянскими символами.</p><button class="primary-btn" onclick="navigate('reading')" data-translit="true">Начать курс →</button></div>
+          <div class="hero-art"><div class="glyph">ա</div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-top"><span data-translit="true">Изучено букв</span><span>✦</span></div><div class="stat-number" id="statLetters">0 / 39</div><div class="stat-note" data-translit="true">Продолжай в своём темпе</div></div>
+          <div class="stat"><div class="stat-top"><span data-translit="true">Уроки</span><span>▤</span></div><div class="stat-number" id="statLessons">0 / 39</div><div class="stat-note" data-translit="true">Одна буква — один мини-урок</div></div>
+          <div class="stat"><div class="stat-top"><span data-translit="true">Серия занятий</span><span>♨</span></div><div class="stat-number">3 дня</div><div class="stat-note" data-translit="true">Ты молодец — продолжай!</div></div>
+        </div>
+        <div class="section-head"><h2 data-translit="true">Твои уроки</h2><button class="text-link" onclick="navigate('alphabet')" data-translit="true">Весь алфавит →</button></div>
+        <div class="course-list">
+          <article class="course"><div class="course-top"><div class="course-icon">ա</div><span class="tag" data-translit="true">Основной курс</span></div><h3 data-translit="true">39 букв через поэтические строки</h3><p data-translit="true">Запоминай форму и звук каждой буквы, находи её в образной строке и закрепляй уже изученные символы.</p><div class="progress"><span id="homeCourseProgress" style="width:0%"></span></div><div class="course-foot"><span id="homeCourseCount" data-translit="true">0 из 39 букв</span><button class="text-link" onclick="navigate('reading')" data-translit="true">Продолжить →</button></div></article>
+          <article class="course"><div class="course-top"><div class="course-icon">Հայ</div><span class="tag" data-translit="true">Финальная цель</span></div><h3 data-translit="true">Читаем настоящее стихотворение</h3><p data-translit="true">После прохождения букв откроется армянский текст для самостоятельного чтения.</p><div class="progress"><span style="width:0%"></span></div><div class="course-foot"><span data-translit="true">Откроется в конце курса</span><button class="text-link" onclick="navigate('reading')" data-translit="true">К курсу →</button></div></article>
+        </div>
+      </section>
+      <section class="page" id="page-reading">
+        <div class="welcome"><div><div class="eyebrow" id="readingEyebrow">МИНИ-УРОК 1 ИЗ 39</div><h1 id="readingMainTitle">Сегодня изучаем букву А</h1><p class="subtext" id="readingIntroText">Сначала познакомься с буквой и её звуком, затем найди её в поэтической строке. Тебе не нужно знать армянский алфавит заранее.</p></div><span class="tag" id="readingCounter">Этап 1 из 2</span></div>
+        <div class="reading-layout" id="reading-layout">
+          <div class="card reading-card">
+            <div class="reading-lesson-meta"><span class="tag" id="storyTag">Поэтическая строка</span><span class="eyebrow" id="sentenceProgressText">Буква 1 из 39</span></div>
+            <h2 id="sentenceTitle" style="margin-top:20px">Знакомимся с буквой Ա ա</h2>
+            <p class="subtext" id="sentenceInstruction">Познакомься с буквой, затем открой поэтическую строку и посмотри, как изученные символы помогают читать.</p>
+            <div class="reading-word sentence-text" id="readingWord" aria-live="polite"></div>
+            <div class="reading-translation" id="readingCaption">Поэтическая строка для тренировки — не армянский перевод.</div>
+            <div class="progress" style="max-width:520px;margin:0 auto 20px"><span id="readingProgress" style="width:0%"></span></div>
+            <div class="reading-controls"><button class="quiet-btn" onclick="resetReading()">↺ Сначала</button><button class="secondary-btn" id="prevStep" onclick="stepReading(-1)">← Назад</button><button class="primary-btn" id="nextStep" onclick="stepReading(1)">Следующий шаг →</button></div>
+            <div class="sentence-extra" id="sentenceExtra" hidden></div>
+            <div class="notice">Замена букв в русской строке — только тренажёр распознавания символов, а не армянский перевод. Настоящее чтение начнётся со слов и фраз, составленных из уже изученных букв.</div>
+          </div>
+          <aside class="card reading-side"><div class="eyebrow">СЕГОДНЯ ИЗУЧАЕМ</div><div class="letter-big" id="readingGlyph">ա</div><h3 id="readingLetterName">А — ա</h3><p id="readingLetterDesc">Это армянская буква ա. Она звучит примерно как русская «а». Сначала запомни форму, затем найди её в предложении.</p><div class="notice" style="margin-bottom:12px">Русская А → армянская ա. Это учебное соответствие букв, а не перевод слова.</div><button class="secondary-btn" style="width:100%" onclick="markLearned()">✓ Я запомнил(а) букву</button><div class="sentence-side-progress"><strong id="sentencesDone">0 из 4 шагов</strong><p class="subtext" style="font-size:12px;margin-top:6px">Сначала знакомство с буквой, потом тренировка на предложении и проверка понимания.</p></div></aside>
+        </div>
+        <div class="card poem-card" id="finalPoem" hidden>
+          <div class="welcome"><div><div class="eyebrow">ФИНАЛЬНОЕ ЧТЕНИЕ</div><h1>Ты прошёл курс!</h1><p class="subtext">Теперь попробуй прочитать стихотворение на армянском. Читай в своём темпе и возвращайся к изученным буквам, если понадобится.</p></div><span class="tag">Твоя цель достигнута</span></div>
+          <h2 style="text-align:center;margin:28px 0">Սիրտ և կյանք</h2>
+          <div class="poem-text" lang="hy">
+            <div class="poem-stanza">Թե հոգնել ես հաղթահարված<br>Կյանքի անվերջ հոգսերով,<br>Թե տանջվում ես արհամարհված<br>Բոցավառվող քո սիրով.</div>
+            <div class="poem-stanza">Թե կյանքի մեջ մի չար դիպված,<br>Մի ամոթ է քեզ ճնշում,<br>Թե չարաչար հիասթափված<br>Կյանքն ատում ես և գարշում,</div>
+            <div class="poem-stanza">Լավ իմացիր, ողջ անօգուտ<br>Պիտի հուզեն միմիայն քեզ,<br>Մի՛ սպառիր ուժը հոգուդ<br>Մտածմունքով կարճատես.</div>
+            <div class="poem-stanza">Հանգիստ եղիր, աղոթք արա,<br>Անհիշաչար եղիր միշտ,<br>Թող քո լացով չուրախանա<br>Քո թշնամին ամբարիշտ։</div>
+            <div class="poem-stanza">Կյանքի ցավը, բախտի խաղը,<br>Ատելությունն անմըտի,<br>Հավատացի՛ր, երբեք չարժեն<br>Վրդովմունքին քո սրտի։</div>
+            <div class="poem-stanza">Եվ այդ սիրտը քեզ չի տված,<br>Որ դու մաշես ամեն օր,<br>Այնտեղ պիտի ապրի Աստված,<br>Ոչ թե ցավեր նորանոր։</div>
+          </div>
+          <div class="notice">Совет: сначала попробуй прочитать самостоятельно, затем возвращайся к алфавиту и подсказкам. В следующих версиях курса здесь можно добавить аудио и построчный разбор.</div>
+          <div class="reading-controls" style="margin-top:20px"><button class="secondary-btn" onclick="resetReading()">↺ Повторить курс</button><button class="primary-btn" onclick="navigate('alphabet')">Повторить алфавит</button></div>
+        </div>
+      </section>
+      <section class="page" id="page-alphabet">
+        <div class="welcome"><div><div class="eyebrow" data-translit="true">СПРАВОЧНИК</div><h1 data-translit="true">Армянский алфавит</h1><p class="subtext" data-translit="true">Нажми на букву, чтобы сделать её текущей и увидеть подсказку в верхней панели.</p></div><span class="tag" id="alphabetProgress">4 из 39 изучено</span></div>
+        <div class="card"><div class="section-head" style="margin-top:0"><h2 data-translit="true">Все буквы</h2><span class="eyebrow" data-translit="true">ВОСТОЧНОАРМЯНСКИЙ</span></div><div class="alphabet-grid" id="alphabetGrid"></div><div class="notice" data-translit="true">Произношение некоторых букв зависит от позиции в слове и языковой традиции. В полноценном курсе подсказки будут сопровождаться проверенными аудиозаписями.</div></div>
+      </section>
+      <section class="page" id="page-profile">
+        <div class="welcome"><div><div class="eyebrow" data-translit="true">ТВОЙ АККАУНТ</div><h1 data-translit="true">Личный кабинет</h1><p class="subtext" data-translit="true">Управляй профилем и следи за своим прогрессом.</p></div><span class="tag">● <span data-translit="true">Демо-профиль</span></span></div>
+        <div class="profile-grid">
+          <div class="card"><h2 data-translit="true">Основная информация</h2><p class="subtext" data-translit="true">Поля доступны для редактирования в этом прототипе.</p><div class="profile-field"><label for="profileName" data-translit="true">Имя</label><input id="profileName" value="Валя" /></div><div class="profile-field"><label for="profileEmail" data-translit="false">Email</label><input id="profileEmail" type="email" value="valya@example.com" /></div><button class="primary-btn" onclick="saveProfile()" data-translit="false">Сохранить изменения</button></div>
+          <div class="card"><h2 data-translit="true">Мой прогресс</h2><div class="stat" style="margin-top:15px"><div class="stat-top"><span data-translit="true">Изучено букв</span><span>ա</span></div><div class="stat-number" id="profileLetters">0 / 39</div><div class="progress"><span id="profileProgressBar" style="width:0%"></span></div></div><div class="settings-row"><div><strong data-translit="true">Текущий курс</strong><small data-translit="true">Первые буквы</small></div><span class="tag" data-translit="true">Начальный</span></div><div class="settings-row"><div><strong data-translit="true">Подписка</strong><small id="profileSubscription" data-translit="true">Бесплатный демо-доступ</small></div><button class="text-link" onclick="navigate('subscription')" data-translit="true">Подробнее →</button></div></div>
+        </div>
+      </section>
+      <section class="page" id="page-subscription">
+        <div class="welcome"><div><div class="eyebrow" data-translit="false">HAYEREN PREMIUM</div><h1 data-translit="true">Учись без ограничений</h1><p class="subtext" data-translit="true">Одна подписка — весь курс армянского языка.</p></div><span class="tag" data-translit="false">299 ₽ / месяц</span></div>
+        <div class="subscription-card"><div class="tag" data-translit="false">HAYEREN PREMIUM</div><div class="price">299 ₽ <small data-translit="true">/ месяц</small></div><p class="subtext" data-translit="true">Для тех, кто хочет читать, понимать и постепенно говорить по-армянски.</p><ul class="feature-list"><li><span class="check">✓</span><span data-translit="true">Все уроки и интерактивные тексты</span></li><li><span class="check">✓</span><span data-translit="true">Замена букв во всём учебном интерфейсе</span></li><li><span class="check">✓</span><span data-translit="true">Тренажёры, повторение и прогресс</span></li><li><span class="check">✓</span><span data-translit="true">Аудио и произношение по мере наполнения курса</span></li><li><span class="check">✓</span><span data-translit="true">Доступ к новым урокам по мере выхода</span></li></ul><div class="subscription-actions"><button class="primary-btn" onclick="subscribeDemo()" data-translit="false">Попробовать подписку — 299 ₽</button><button class="quiet-btn" onclick="navigate('home')" data-translit="true">Вернуться к урокам</button></div><p class="demo-label" data-translit="false">Демонстрационный режим: кнопка не списывает деньги и не создаёт настоящую подписку. Для запуска понадобятся платёжный провайдер, серверная проверка статуса подписки, согласие на автопродление и страница отмены.</p></div>
+      </section>
+      <section class="page" id="page-settings">
+        <div class="welcome"><div><div class="eyebrow" data-translit="false">SETTINGS</div><h1 data-translit="false">Настройки</h1><p class="subtext" data-translit="false">Важные настройки остаются на русском и не меняются вместе с буквами.</p></div><span class="tag" data-translit="false">Без замены букв</span></div>
+        <div class="card"><div class="settings-row"><div><strong data-translit="false">Заменять буквы в упражнениях</strong><small data-translit="false">Только учебные слова внутри урока</small></div><button id="replaceSwitch" class="switch" onclick="toggleReplacement()" aria-label="Переключить замену букв"><span></span></button></div><div class="settings-row"><div><strong data-translit="false">Показывать подсказку текущей буквы</strong><small data-translit="false">Закреплённая панель вверху страницы</small></div><button id="panelSwitch" class="switch" onclick="togglePanel()" aria-label="Показывать панель буквы"><span></span></button></div><div class="settings-row"><div><strong data-translit="false">Сбросить прогресс</strong><small data-translit="false">Вернуть демонстрационные настройки</small></div><button class="quiet-btn" onclick="resetAll()" data-translit="false">Сбросить</button></div></div>
+      </section>
+      <div class="footer" data-translit="false">Hayeren · Интерактивный прототип · Не является опубликованным сервисом</div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+<script>
+const alphabet = [
+  {hy:'ա',ru:'а',name:'А',sound:'а'}, {hy:'բ',ru:'б',name:'Б',sound:'б'}, {hy:'գ',ru:'г',name:'Г',sound:'г'}, {hy:'դ',ru:'д',name:'Д',sound:'д'}, {hy:'ե',ru:'е',name:'Е',sound:'е / йе'}, {hy:'զ',ru:'з',name:'З',sound:'з'}, {hy:'է',ru:'э',name:'Э',sound:'э'}, {hy:'ը',ru:'ə',name:'Ə',sound:'нейтральный гласный, не русская «ы»'}, {hy:'թ',ru:'т',name:'Тх',sound:'придыхательный т'}, {hy:'ժ',ru:'ж',name:'Ж',sound:'ж'}, {hy:'ի',ru:'и',name:'И',sound:'и'}, {hy:'լ',ru:'л',name:'Л',sound:'л'}, {hy:'խ',ru:'х',name:'Х',sound:'глубокий х'}, {hy:'ծ',ru:'ц',name:'Ц',sound:'ц'}, {hy:'կ',ru:'к',name:'К',sound:'к'}, {hy:'հ',ru:'h',name:'Һ',sound:'h'}, {hy:'ձ',ru:'дз',name:'Дз',sound:'дз'}, {hy:'ղ',ru:'gh',name:'Гх',sound:'заднеязычный звук'}, {hy:'ճ',ru:'ч',name:'Ч',sound:'ч'}, {hy:'մ',ru:'м',name:'М',sound:'м'}, {hy:'յ',ru:'й',name:'Й',sound:'й'}, {hy:'ն',ru:'н',name:'Н',sound:'н'}, {hy:'շ',ru:'ш',name:'Ш',sound:'ш'}, {hy:'ո',ru:'о',name:'О',sound:'о / во'}, {hy:'չ',ru:'ch',name:'Чʼ',sound:'твёрдое ч'}, {hy:'պ',ru:'п',name:'П',sound:'п'}, {hy:'ջ',ru:'дж',name:'Дж',sound:'дж'}, {hy:'ռ',ru:'rr',name:'Рр',sound:'раскатистое р'}, {hy:'ս',ru:'с',name:'С',sound:'с'}, {hy:'վ',ru:'в',name:'В',sound:'в'}, {hy:'տ',ru:'т',name:'Т',sound:'твёрдое т'}, {hy:'ր',ru:'р',name:'Р',sound:'р'}, {hy:'ց',ru:'ц',name:'Цʼ',sound:'твёрдое ц'}, {hy:'ւ',ru:'у',name:'У',sound:'у в сочетаниях'}, {hy:'փ',ru:'п',name:'Пʼ',sound:'твёрдое п'}, {hy:'ք',ru:'к',name:'Кʼ',sound:'твёрдое к'}, {hy:'և',ru:'ев',name:'Ев',sound:'ев'}, {hy:'օ',ru:'о',name:'О',sound:'о'}, {hy:'ֆ',ru:'ф',name:'Ф',sound:'ф'}
+];
+let learned = new Set();
+let currentIndex = 0;
+let replaceEnabled = true;
+let panelEnabled = true;
+let subscriptionActive = false;
+let currentPage = 'home';
+const poetryLines = ['А в аллее алый клён ловит вечер на ладонь.','Бережёт бесшумный берег белый парус у воды.','Где горит вдали зарница, гаснут звёзды над рекой.','Дождь рисует на дороге серебристые следы.','Еле слышно ель качает колыбель для ветерка.','Золотится за холмами запоздалая заря.','Эхо дремлет в старом парке, не тревожа тишину.','Эхо над озером тает, и вечер становится тише.','Тихо тает тёплый иней на траве перед весной.','Журавлиный путь ложится серебром за облаками.','Искры инея искрятся на ресницах у зимы.','Лунный луч легонько лёг на листья липы у окна.','Хрупкий хмель над тихим домом пахнет летом и дождём.','Цапля чертит цепь кругов у камышей на глади сонной.','Корабли качает космос — море звёзд над головой.','Холодок хранит рассвет в прозрачной чаше тишины.','Дзынь — и дверь открылась в сад, где дозревает виноград.','Глубже гул горы звучит, когда просыпается гроза.','Чайка чертит над волною белый знак перед закатом.','Море медленно меняет цвет у каменного мыса.','Йодный запах моря прячет полдень в складках паруса.','Над набережной ночь нанизывает огни на тёмную нить.','Шелест шёлка и шиповника слышен в саду до темноты.','Облака обходят остров, оставляя светлый след.','Чёрный чайник чинно дышит у раскрытого окна.','Пыль дорог переливается золотом под каблуком.','Джаз доносится из окна, где город учится мечтать.','Резкий рокот раскатился, и река проснулась вдруг.','Синий сумрак собирает силуэты старых крыш.','Ветер выворачивает страницы у раскрытой книги.','Тонкий трамвайный звон тонет в тёплом свете фонарей.','Река рисует росчерки на камнях у старой пристани.','Цветы цепляются за свет на каменной стене.','Утро уносит улиц шум в голубую даль.','Перо плывёт по полю, будто птица над травой.','Крошечный костёр хранит тепло среди снегов.','Ещё один рассвет — и весь мир звучит светлей.','Огни окон обнимают город в поздний час.','Фонарь фонтану шепчет сказку до утра.'];
+const lessonSentences = alphabet.map((a,i)=>({title:`Буква ${a.name}: ${a.hy}`,ru:poetryLines[i],hy:a.hy,translation:`Сегодня знакомимся с армянской буквой ${a.hy} и звуком «${a.sound}». Строка — авторская мнемоника для тренировки внимания к буквам; смешанная запись не является переводом.`}));
+let sentenceIndex = 0;
+let readingStep = 0;
+let completedSentences = new Set();
+let courseCompleted = false;
+function currentLetter(){ return alphabet[currentIndex] || alphabet[0]; }
+function escapeHTML(str){ return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function renderHeader(){
+ const a=currentLetter();
+ document.getElementById('currentGlyph').textContent=a.hy;
+ document.getElementById('currentLetterTitle').textContent=`${a.name.toUpperCase()} → ${a.hy} · звук «${a.sound}»`;
+ document.getElementById('learnedLetters').innerHTML=alphabet.filter(x=>learned.has(x.hy)).map(x=>`<span class="letter-chip ${x.hy===a.hy?'current':''}" title="${x.name}">${x.hy}</span>`).join('')+`<span class="letter-chip" title="Всего изучено">${learned.size}/39</span>`;
+ document.querySelector('.letter-panel').style.display=(panelEnabled && currentPage==='reading')?'flex':'none';
+ document.getElementById('statLetters').textContent=`${learned.size} / 39`;
+ document.getElementById('statLessons').textContent=`${completedSentences.size} / 39`;
+ document.getElementById('homeCourseCount').textContent=`${completedSentences.size} из 39 букв`;
+ document.getElementById('homeCourseProgress').style.width=(completedSentences.size/39*100)+'%';
+ document.getElementById('profileLetters').textContent=`${learned.size} / 39`;
+ document.getElementById('profileProgressBar').style.width=(learned.size/39*100)+'%';
+ document.getElementById('alphabetProgress').textContent=`${learned.size} из 39 изучено`;
+ document.getElementById('profileSubscription').textContent=subscriptionActive?'Premium · демо-доступ активен':'Бесплатный демо-доступ';
+ document.getElementById('replaceSwitch').classList.toggle('off',!replaceEnabled);
+ document.getElementById('panelSwitch').classList.toggle('off',!panelEnabled);
+ renderAlphabet(); renderReading(); applyTransliteration();
+}
+function transliterateText(text){
+ // Educational display only: replace only single-letter mappings to avoid suggesting a real translation.
+ const map = {'а':'ա','б':'բ','г':'գ','д':'դ','з':'զ','ж':'ժ','и':'ի','л':'լ','ц':'ծ','к':'կ','х':'խ','м':'մ','й':'յ','н':'ն','ш':'շ','о':'ո','п':'պ','ч':'ճ','с':'ս','в':'վ','т':'տ','р':'ր','у':'ւ','ф':'ֆ','э':'է'};
+ const learnedMap={};
+ alphabet.forEach(x=>{ if(learned.has(x.hy) && x.ru.length===1) learnedMap[x.ru]=x.hy; });
+ const sourceMap=Object.assign({},map,learnedMap);
+ return Array.from(text).map(ch=>{const lower=ch.toLowerCase(); const replacement=sourceMap[lower]; if(!replacement)return ch; return ch===lower?replacement:replacement;}).join('');
+}
+function applyTransliteration(){
+ // Весь интерфейс остаётся на русском. Армянские буквы появляются только в области упражнения.
+ // Подписи, меню, профиль, настройки и экран подписки никогда не транслитерируются.
+ document.querySelectorAll('[data-translit="true"]').forEach(el=>{
+  if(!el.dataset.original) el.dataset.original=el.textContent;
+  el.textContent=el.dataset.original;
+ });
+}
+function navigate(page){
+ currentPage=page;
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+page));
+ document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===page));
+ if(page==='alphabet')renderAlphabet(); if(page==='reading')renderHeader();
+ const tg=window.Telegram&&window.Telegram.WebApp;
+ if(tg&&tg.BackButton){if(page==='home')tg.BackButton.hide();else tg.BackButton.show();}
+ applyTransliteration(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderAlphabet(){
+ const grid=document.getElementById('alphabetGrid'); if(!grid)return;
+ grid.innerHTML=alphabet.map((a,i)=>`<button class="alphabet-item ${learned.has(a.hy)?'learned':''} ${i===currentIndex?'selected':''}" onclick="selectLetter(${i})" aria-label="Буква ${a.hy}"><span class="hy">${a.hy}</span><span class="ru">${escapeHTML(a.name)} · ${learned.has(a.hy)?'✓':'учить'}</span></button>`).join('');
+}
+function selectLetter(i){currentIndex=i;renderHeader();const a=currentLetter();document.getElementById('readingGlyph').textContent=a.hy;document.getElementById('readingLetterName').textContent=`${a.name} — ${a.hy}`;document.getElementById('readingLetterDesc').textContent=`Учебная подсказка: звук «${a.sound}». Некоторые соответствия приблизительны.`;showToast(`Текущая буква: ${a.hy}`);}
+function renderReading(){
+ if(courseCompleted){document.getElementById('reading-layout').style.display='none';document.getElementById('finalPoem').hidden=false;return;}
+ document.getElementById('reading-layout').style.display='grid';document.getElementById('finalPoem').hidden=true;
+ const a=alphabet[sentenceIndex]||alphabet[0];const sentence=lessonSentences[sentenceIndex]||lessonSentences[0];
+ const translit={'а':'ա','б':'բ','в':'վ','г':'գ','д':'դ','е':'ե','ё':'յո','ж':'ժ','з':'զ','и':'ի','й':'յ','к':'կ','л':'լ','м':'մ','н':'ն','о':'ո','п':'պ','р':'ր','с':'ս','т':'տ','у':'ւ','ф':'ֆ','х':'խ','ц':'ծ','ч':'ճ','ш':'շ','щ':'շ','э':'է','ю':'յու','я':'յա','ы':'ը','ь':'','ъ':''};
+ const target=a.ru.length===1?a.ru.toLowerCase():({dz:'д',gh:'г',rr:'р',ch:'ч'}[a.ru]||'');
+ const done=readingStep>=1;const out=Array.from(sentence.ru).map(ch=>{const low=ch.toLowerCase();const entry=alphabet.find(x=>x.ru.length===1&&x.ru.toLowerCase()===low&&learned.has(x.hy));const shouldReplace=replaceEnabled&&done&&(low===target||entry);if(!shouldReplace)return escapeHTML(ch);const glyph=low===target?a.hy:(entry?entry.hy:translit[low]);return glyph?`<span class="changed">${escapeHTML(ch===ch.toUpperCase()?glyph.toUpperCase():glyph)}</span>`:escapeHTML(ch);}).join('');
+ document.getElementById('readingEyebrow').textContent=`МИНИ-УРОК ${sentenceIndex+1} ИЗ ${alphabet.length}`;
+ document.getElementById('readingMainTitle').textContent=`Буква ${a.name} · ${a.hy}`;
+ document.getElementById('readingIntroText').textContent=`Знакомимся с армянской буквой ${a.hy}, её звучанием и образом. Затем потренируемся узнавать символ в авторской поэтической строке.`;
+ document.getElementById('readingCounter').textContent=`Этап ${readingStep+1} из 2`;document.getElementById('sentenceProgressText').textContent=`Буква ${sentenceIndex+1} из ${alphabet.length}`;
+ document.getElementById('storyTag').textContent=done?'Поэтическая строка':'Знакомство с буквой';document.getElementById('sentenceTitle').textContent=sentence.title;
+ document.getElementById('sentenceInstruction').textContent=done?'Цветом отмечены армянские символы, которые ты уже изучил(а), включая текущую букву. Это подсказка для узнавания формы, не перевод.':'Запомни форму и звучание. Когда будешь готов(а), открой строку и найди букву в контексте.';
+ document.getElementById('readingWord').innerHTML=done?out:`<span class="changed">${escapeHTML(a.name)}</span> → <span class="changed">${escapeHTML(a.hy)}</span>`;
+ document.getElementById('readingProgress').style.width=(done?100:50)+'%';document.getElementById('prevStep').disabled=sentenceIndex===0&&readingStep===0;
+ document.getElementById('nextStep').textContent=done?(sentenceIndex===alphabet.length-1?'Завершить курс ✓':'Следующая буква →'):'Открыть поэтическую строку →';
+ document.getElementById('readingGlyph').textContent=a.hy;document.getElementById('readingLetterName').textContent=`${a.name} — ${a.hy}`;document.getElementById('readingLetterDesc').textContent=a.hy==='ւ'?'В этом курсе буква Ու (у) будет показана как «У». Название «вюн» убрано; отдельно ւ используется в сочетаниях и не является самостоятельной гласной буквой современного восточноармянского алфавита.':a.hy==='ը'?'Ը обозначает нейтральный гласный звук (ə), а не русскую «ы». Запоминай её как отдельный армянский звук.':`Армянская буква ${a.hy}; ориентир по звучанию: «${a.sound}». Сначала запомни её, потом найди в строке.`;
+ document.getElementById('readingCaption').textContent=done?'Авторская русская строка с учебной заменой знакомых букв — не армянский перевод.':'Сначала выучи букву, затем открой строку.';
+ const extra=document.getElementById('sentenceExtra');extra.hidden=!done;extra.innerHTML=done?`<div class="real-sentence"><div class="eyebrow">ПОЭТИЧЕСКАЯ СТРОКА</div><div class="translation-line"><strong>Образ для запоминания</strong><p>${escapeHTML(sentence.ru)}</p></div><div class="quiz-prompt"><strong>Проверь себя</strong><p>Найди глазами символ ${escapeHTML(a.hy)}. После этого переходи к следующей букве.</p></div></div>`:'';
+ document.getElementById('sentencesDone').textContent=`${completedSentences.size} из ${alphabet.length} букв пройдено`;
+}
+function stepReading(delta){
+ if(delta<0){if(readingStep>0)readingStep=0;else if(sentenceIndex>0){sentenceIndex--;currentIndex=sentenceIndex;readingStep=1;}renderHeader();renderReading();return;}
+ if(readingStep===0){readingStep=1;learned.add(alphabet[sentenceIndex].hy);completedSentences.add(sentenceIndex);currentIndex=sentenceIndex;renderHeader();renderReading();showToast(`Буква ${alphabet[sentenceIndex].hy} добавлена в изученные`);return;}
+ if(sentenceIndex<alphabet.length-1){sentenceIndex++;currentIndex=sentenceIndex;readingStep=0;renderHeader();renderReading();showToast('Следующая буква — новая поэтическая строка.');}
+ else{courseCompleted=true;renderReading();showToast('Все 39 букв пройдены! Теперь можно читать стихотворение.');}
+}
+function resetReading(){sentenceIndex=0;readingStep=0;courseCompleted=false;completedSentences.clear();renderReading();showToast('Урок начат заново');}
+function markLearned(){learned.add(currentLetter().hy);renderHeader();showToast(`Буква ${currentLetter().hy} отмечена изученной`);}
+function toggleReplacement(){replaceEnabled=!replaceEnabled;renderHeader();showToast(replaceEnabled?'Замена букв включена':'Замена букв выключена');}
+function togglePanel(){panelEnabled=!panelEnabled;renderHeader();showToast(panelEnabled?'Панель буквы включена':'Панель буквы скрыта');}
+function saveProfile(){const name=document.getElementById('profileName').value.trim()||'Ученик';document.querySelector('h1[data-translit="true"]').dataset.original=`Привет, ${name}! Շարունակենք`;applyTransliteration();showToast('Изменения сохранены в демо-интерфейсе');}
+function subscribeDemo(){subscriptionActive=true;renderHeader();showToast('Демо-доступ Premium включён — деньги не списаны');}
+function resetAll(){learned=new Set();currentIndex=0;sentenceIndex=0;readingStep=0;courseCompleted=false;completedSentences.clear();replaceEnabled=true;panelEnabled=true;subscriptionActive=false;renderHeader();showToast('Демонстрационные данные сброшены');}
+let toastTimer;
+function showToast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400);}
+function initTelegramMiniApp(){
+ const tg=window.Telegram&&window.Telegram.WebApp;
+ if(!tg)return;
+ try{
+  tg.ready();tg.expand();
+  if(tg.setHeaderColor)tg.setHeaderColor('secondary_bg_color');
+  if(tg.setBackgroundColor)tg.setBackgroundColor(getComputedStyle(document.documentElement).getPropertyValue('--site-background').trim()||'#f8f7fb');
+  if(tg.BackButton&&typeof tg.BackButton.onClick==='function')tg.BackButton.onClick(()=>navigate('home'));
+  const user=tg.initDataUnsafe&&tg.initDataUnsafe.user;
+  if(user){
+   const displayName=[user.first_name,user.last_name].filter(Boolean).join(' ').trim()||'Ученик';
+   document.getElementById('profileName').value=displayName;
+   document.querySelector('.avatar').textContent=(user.first_name||displayName).slice(0,1).toUpperCase();
+   const greeting=document.querySelector('#page-home .welcome h1');
+   if(greeting)greeting.textContent=`Привет, ${user.first_name||'друг'}! Продолжим?`;
+   const email=document.getElementById('profileEmail');if(email)email.value='';
+  }
+ }catch(e){console.warn('Telegram Mini App initialization issue',e);}
+}
+initTelegramMiniApp();
+renderHeader();
+</script>
+</body>
+</html>
