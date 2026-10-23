@@ -7,12 +7,12 @@
 <title>Hayeren — армянский шаг за шагом</title>
 <style>
 :root {
-  --site-primary: #7451d6;
-  --site-secondary: #eee9ff;
-  --site-background: #f8f7fb;
+  --site-primary: #6d4b3d;
+  --site-secondary: #f1e8df;
+  --site-background: #fbf8f3;
   --site-on-primary: #ffffff;
-  --site-on-secondary: #34235f;
-  --site-on-background: #211d2d;
+  --site-on-secondary: #513a30;
+  --site-on-background: #29241f;
   --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --site-heading-scale: 1;
@@ -163,6 +163,31 @@ h2 { font-size:calc(22px * var(--site-heading-scale)); letter-spacing:-.5px; mar
   .hero h2 { font-size:24px; }
   .card { padding:17px; }
   .subscription-card { padding:22px; }
+  .top-inner { padding:10px 12px; }
+  .brandmark { width:34px; height:34px; font-size:20px; }
+  .brand-name { font-size:17px; }
+  .layout { padding:12px 10px 28px; gap:10px; }
+  .sidebar { position:sticky; top:0; z-index:15; background:var(--site-background); padding:5px 0 8px; }
+  .nav-item { flex:1; justify-content:center; padding:9px 7px; font-size:11px; }
+  .nav-item[data-page="profile"],.nav-item[data-page="subscription"],.nav-item[data-page="settings"] { display:none; }
+  .welcome { margin:2px 0 14px; }
+  .welcome .tag { display:none; }
+  .welcome h1 { margin-bottom:6px; }
+  .subtext { font-size:12px; line-height:1.45; }
+  .hero { padding:17px; border-radius:18px; gap:8px; }
+  .hero h2 { margin:8px 0; font-size:21px; }
+  .hero p { font-size:12px; line-height:1.45; margin-bottom:12px; }
+  .stats { gap:7px; margin-top:10px; }
+  .stat { padding:11px; border-radius:13px; }
+  .stat-number { font-size:21px; margin:7px 0 2px; }
+  .stat-note { display:none; }
+  .section-head { margin:17px 0 9px; }
+  .course-list { gap:8px; }
+  .course { padding:13px; }
+  .course:nth-child(2) { display:none; }
+  .course h3 { margin:10px 0 5px; }
+  .course p { min-height:0; margin-bottom:10px; }
+  .footer { margin-top:18px; }
 }
 
 .reading-lesson-meta { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
@@ -177,6 +202,102 @@ h2 { font-size:calc(22px * var(--site-heading-scale)); letter-spacing:-.5px; mar
 .poem-card { max-width:850px; margin:0 auto; padding:clamp(22px,5vw,42px); }
 .poem-text { white-space:pre-line; font-family:Georgia,'Times New Roman',serif; font-size:clamp(18px,2.5vw,23px); line-height:1.9; text-align:center; overflow-wrap:anywhere; }
 .poem-stanza { margin:0 0 22px; }
+
+/* Liquid Glass: translucent layers, soft refraction, floating navigation. */
+:root { --site-primary:#007aff; --site-secondary:#e8f2ff; --site-background:#f2f2f7; --site-on-primary:#ffffff; --site-on-secondary:#0757b8; --site-on-background:#1c1c1e; }
+html { color-scheme:light; }
+body { background:radial-gradient(ellipse at 12% 0%,#dceaff 0,transparent 34%),radial-gradient(ellipse at 92% 18%,#e9e2ff 0,transparent 32%),#f2f2f7; color:#1c1c1e; letter-spacing:-.015em; -webkit-font-smoothing:antialiased; }
+#app { background:transparent; }
+.topbar { position:sticky; top:8px; z-index:20; margin:8px 12px 0; background:rgba(255,255,255,.56); border:1px solid rgba(255,255,255,.82); border-radius:24px; box-shadow:0 8px 30px #344c7412,inset 0 1px 0 #ffffffc9; backdrop-filter:saturate(190%) blur(28px); -webkit-backdrop-filter:saturate(190%) blur(28px); }
+.top-inner { gap:14px; padding:11px 18px; }
+.brandmark { background:linear-gradient(145deg,#0a84ff,#5e5ce6); border-radius:13px; box-shadow:inset 0 1px 0 #ffffff80,0 5px 12px #347de52b; }
+.brand-name { letter-spacing:-.65px; }
+.brand-sub { color:#777e8e; }
+.letter-panel { border:1px solid #ffffffd1; background:rgba(255,255,255,.52); border-radius:18px; box-shadow:inset 0 1px 0 #fff,0 4px 14px #334b6b0b; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+.current-letter { background:linear-gradient(145deg,#ffffffd9,#dceaffb8); color:#007aff; border-radius:13px; box-shadow:inset 0 1px 0 #fff; }
+.eyebrow { color:#818797; letter-spacing:1px; }
+.letter-chip { background:#ffffffa8; color:#007aff; border:1px solid #ffffffb8; border-radius:9px; }
+.letter-chip.current { background:linear-gradient(135deg,#1688ff,#5e5ce6); color:#fff; }
+.avatar { background:rgba(255,255,255,.66); color:#007aff; border:1px solid #ffffffdc; box-shadow:0 4px 12px #344c7410,inset 0 1px 0 #fff; backdrop-filter:blur(16px); }
+.layout { gap:25px; }
+.sidebar { align-self:start; position:sticky; top:94px; padding:10px; border-radius:26px; border:1px solid #ffffffc9; background:rgba(255,255,255,.42); box-shadow:0 12px 35px #344c7410,inset 0 1px 0 #ffffffd9; backdrop-filter:saturate(180%) blur(26px); -webkit-backdrop-filter:saturate(180%) blur(26px); }
+.nav-label { color:#8b91a0; padding:13px 12px 6px; }
+.nav-item { position:relative; border-radius:15px; padding:12px 13px; color:#626a7b; transition:background .2s,transform .2s,box-shadow .2s; }
+.nav-item:hover { background:#ffffff85; transform:translateX(2px); }
+.nav-item.active { color:#0066d6; background:linear-gradient(135deg,#ffffffeb,#e4efffc9); border:1px solid #ffffff; box-shadow:0 5px 16px #4a82c51c,inset 0 1px 0 #fff; }
+.nav-item.active:before { content:""; position:absolute; left:-10px; top:25%; bottom:25%; width:3px; border-radius:9px; background:linear-gradient(#0a84ff,#5e5ce6); }
+.nav-icon { display:grid; place-items:center; width:28px; height:28px; border-radius:10px; background:#ffffff8c; color:#5e5ce6; font-size:16px; }
+.nav-item.active .nav-icon { color:#007aff; background:#ffffffd9; box-shadow:inset 0 1px 0 #fff; }
+.side-card { margin:18px 1px 1px; border:1px solid #ffffff70; background:linear-gradient(145deg,#1688ffed,#5e5ce6e8); border-radius:20px; box-shadow:0 10px 24px #347de52b,inset 0 1px 0 #ffffff55; }
+.side-card button { color:#0066d6; border-radius:12px; box-shadow:0 3px 10px #123c9a14; }
+.hero { background:linear-gradient(130deg,#1688ffeF 0%,#477df3ee 52%,#7466e9ed 100%); border:1px solid #ffffff70; border-radius:30px; box-shadow:0 18px 42px #4778d329,inset 0 1px 0 #ffffff90; backdrop-filter:blur(14px); }
+.hero:before { content:""; position:absolute; width:280px; height:280px; right:-65px; top:-120px; border:1px solid #ffffff5c; border-radius:50%; box-shadow:0 0 0 22px #ffffff12,0 0 0 45px #ffffff0c,0 0 0 70px #ffffff08; pointer-events:none; }
+.hero .tag { background:#ffffff2c; color:#fff; border:1px solid #ffffff35; letter-spacing:.06em; backdrop-filter:blur(12px); }
+.hero .primary-btn { background:rgba(255,255,255,.91); color:#0066d6; border:1px solid #ffffff; box-shadow:0 6px 18px #173f8b24,inset 0 1px 0 #fff; }
+.glyph { border-radius:42px; background:linear-gradient(145deg,#ffffff4a,#ffffff12); border:1px solid #ffffffa3; box-shadow:inset 0 1px 0 #ffffffb5,0 18px 45px #123c9a2b; backdrop-filter:blur(16px); transform:rotate(0); }
+.primary-btn,.secondary-btn,.quiet-btn { border-radius:15px; }
+.primary-btn { background:linear-gradient(135deg,#0a84ff,#3478f6); color:#fff; box-shadow:0 5px 14px #007aff25,inset 0 1px 0 #ffffff4d; }
+.secondary-btn { background:linear-gradient(145deg,#ffffffc9,#e6f1ffb8); color:#0066d6; border:1px solid #ffffffd9; box-shadow:0 4px 12px #344c740b,inset 0 1px 0 #fff; }
+.quiet-btn { background:#ffffff80; color:#3a3a3c; border:1px solid #ffffffbd; }
+.stat,.course,.card,.subscription-card { background:rgba(255,255,255,.68); border:1px solid #ffffffd9; box-shadow:0 8px 24px #344c740b,inset 0 1px 0 #ffffffd9; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+.stat { border-radius:21px; }
+.course { border-radius:22px; }
+.course-icon { background:linear-gradient(145deg,#ffffffd9,#e2edffb8); color:#007aff; border:1px solid #ffffff; border-radius:14px; box-shadow:inset 0 1px 0 #fff; }
+.progress { background:#dce2edb8; }
+.progress > span { background:linear-gradient(90deg,#0a84ff,#5e5ce6); box-shadow:0 0 10px #007aff4a; }
+.tag { background:#ffffffa3; color:#0066d6; border:1px solid #ffffffbf; box-shadow:inset 0 1px 0 #fff; }
+.reading-word .changed,.sentence-text .changed { color:#006fe6; background:#dcecffb8; border-radius:7px; }
+.letter-big { background:linear-gradient(145deg,#ffffffde,#dceaffc4); color:#007aff; border:1px solid #fff; border-radius:23px; box-shadow:0 8px 20px #347de51a,inset 0 1px 0 #fff; }
+.notice { background:rgba(255,255,255,.56); color:#3a3a3c; border:1px solid #ffffffc7; backdrop-filter:blur(14px); }
+.sentence-extra { border-color:#ffffffd9; background:rgba(255,255,255,.62); box-shadow:inset 0 1px 0 #fff; }
+.quiz-prompt { background:#e4efffc9; border:1px solid #ffffffc9; }
+.alphabet-item { border-color:#ffffffd9; border-radius:17px; background:rgba(255,255,255,.68); box-shadow:0 5px 14px #344c7408,inset 0 1px 0 #ffffffd9; }
+.alphabet-item .hy { color:#007aff; }
+.alphabet-item.learned { border-color:#a8d0ff; background:linear-gradient(145deg,#ffffffde,#e5f1ffc9); }
+.alphabet-item.selected { outline-color:#007aff; box-shadow:0 0 0 3px #007aff20,0 8px 18px #347de51c; }
+.subscription-card { border-radius:28px; }
+.toast { background:rgba(35,37,45,.82); color:#fff; border:1px solid #ffffff30; border-radius:16px; box-shadow:0 12px 30px #0002,inset 0 1px 0 #ffffff24; backdrop-filter:blur(24px); }
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme:dark; --site-primary:#0a84ff; --site-secondary:#263b59; --site-background:#090b12; --site-on-primary:#ffffff; --site-on-secondary:#c4ddff; --site-on-background:#f5f5f7; }
+  body { background:radial-gradient(ellipse at 12% 0%,#142b4b 0,transparent 36%),radial-gradient(ellipse at 92% 18%,#2b2147 0,transparent 32%),#090b12; color:#f5f5f7; }
+  #app { background:transparent; }
+  .topbar { background:rgba(30,32,42,.58); border-color:#ffffff25; box-shadow:0 8px 30px #0002,inset 0 1px 0 #ffffff24; }
+  .brand-sub,.subtext,.stat-note,.course p,.course-foot,.reading-translation { color:#a6adbd; }
+  .letter-panel,.sidebar { background:rgba(35,37,49,.55); border-color:#ffffff22; box-shadow:0 12px 35px #0002,inset 0 1px 0 #ffffff1b; }
+  .current-letter,.avatar,.course-icon,.tag,.secondary-btn,.quiet-btn,.notice,.quiz-prompt,.nav-item.active { background:rgba(48,63,91,.72); color:#c4ddff; border-color:#ffffff2b; }
+  .nav-item { color:#c4c8d3; }
+  .nav-item:hover { background:#ffffff12; }
+  .nav-icon { background:#ffffff12; color:#a9b7ff; }
+  .hero { border-color:#ffffff2b; box-shadow:0 18px 42px #0003,inset 0 1px 0 #ffffff45; }
+  .hero .primary-btn { background:rgba(255,255,255,.91); color:#0066d6; }
+  .stat,.course,.card,.subscription-card,.alphabet-item { background:rgba(31,33,43,.66); border-color:#ffffff20; box-shadow:0 8px 24px #0002,inset 0 1px 0 #ffffff12; }
+  .progress { background:#3b4050; }
+  .letter-chip { background:#ffffff12; color:#9dc9ff; border-color:#ffffff18; }
+  .letter-chip.current { background:linear-gradient(135deg,#1688ff,#5e5ce6); color:#fff; }
+  .sentence-extra { background:rgba(31,33,43,.7); border-color:#ffffff20; }
+  .profile-field input { background:rgba(20,22,30,.7); border-color:#ffffff25; }
+  .alphabet-item.learned { background:rgba(37,56,82,.8); border-color:#5c8ec7; }
+  .letter-big { background:linear-gradient(145deg,#2b3e5b,#22263a); color:#9dc9ff; border-color:#ffffff28; }
+}
+@media (max-width:850px) {
+  .topbar { margin:6px 8px 0; top:6px; }
+  .sidebar { position:sticky; top:88px; z-index:15; flex-direction:row; overflow-x:auto; gap:5px; padding:7px; border-radius:19px; }
+  .nav-label,.side-card { display:none; }
+  .nav-item { width:auto; white-space:nowrap; padding:9px 12px; }
+  .nav-item.active:before { left:12px; right:12px; top:auto; bottom:-7px; width:auto; height:3px; }
+  .nav-icon { display:none; }
+}
+@media (max-width:520px) {
+  .topbar { margin:5px 6px 0; border-radius:20px; }
+  .top-inner { padding:9px 10px; }
+  .layout { padding:10px 10px 28px; gap:12px; }
+  .sidebar { top:74px; padding:6px; gap:3px; border-radius:17px; }
+  .nav-item { flex:1; justify-content:center; padding:10px 5px; font-size:11px; border-radius:12px; }
+  .nav-item[data-page="profile"],.nav-item[data-page="subscription"],.nav-item[data-page="settings"] { display:none; }
+  .hero { border-radius:23px; }
+  .stat { border-radius:16px; }
+  .course { border-radius:17px; }
+}
 
 </style>
 </head>
@@ -304,6 +425,15 @@ let sentenceIndex = 0;
 let readingStep = 0;
 let completedSentences = new Set();
 let courseCompleted = false;
+const STORAGE_KEY = 'hayeren-progress-v1';
+function saveProgress(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify({learned:[...learned],currentIndex,sentenceIndex,readingStep,completedSentences:[...completedSentences],courseCompleted,replaceEnabled,panelEnabled,subscriptionActive,currentPage}));}catch(e){console.warn('Could not save progress',e);}
+}
+function loadProgress(){
+ try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;const s=JSON.parse(raw);if(!s||typeof s!=='object')return;
+  learned=new Set(Array.isArray(s.learned)?s.learned:[]);currentIndex=Number.isInteger(s.currentIndex)?Math.max(0,Math.min(38,s.currentIndex)):0;sentenceIndex=Number.isInteger(s.sentenceIndex)?Math.max(0,Math.min(38,s.sentenceIndex)):0;readingStep=s.readingStep===1?1:0;completedSentences=new Set(Array.isArray(s.completedSentences)?s.completedSentences:[]);courseCompleted=!!s.courseCompleted;replaceEnabled=s.replaceEnabled!==false;panelEnabled=s.panelEnabled!==false;subscriptionActive=!!s.subscriptionActive;currentPage=['home','reading','alphabet','profile','subscription','settings'].includes(s.currentPage)?s.currentPage:'home';
+ }catch(e){console.warn('Could not load progress',e);}
+}
 function currentLetter(){ return alphabet[currentIndex] || alphabet[0]; }
 function escapeHTML(str){ return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function renderHeader(){
@@ -322,7 +452,7 @@ function renderHeader(){
  document.getElementById('profileSubscription').textContent=subscriptionActive?'Premium · демо-доступ активен':'Бесплатный демо-доступ';
  document.getElementById('replaceSwitch').classList.toggle('off',!replaceEnabled);
  document.getElementById('panelSwitch').classList.toggle('off',!panelEnabled);
- renderAlphabet(); renderReading(); applyTransliteration();
+ renderAlphabet(); renderReading(); applyTransliteration(); saveProgress();
 }
 function transliterateText(text){
  // Educational display only: replace only single-letter mappings to avoid suggesting a real translation.
@@ -347,7 +477,7 @@ function navigate(page){
  if(page==='alphabet')renderAlphabet(); if(page==='reading')renderHeader();
  const tg=window.Telegram&&window.Telegram.WebApp;
  if(tg&&tg.BackButton){if(page==='home')tg.BackButton.hide();else tg.BackButton.show();}
- applyTransliteration(); window.scrollTo({top:0,behavior:'smooth'});
+ applyTransliteration(); saveProgress(); window.scrollTo({top:0,behavior:'smooth'});
 }
 function renderAlphabet(){
  const grid=document.getElementById('alphabetGrid'); if(!grid)return;
@@ -381,13 +511,13 @@ function stepReading(delta){
  if(sentenceIndex<alphabet.length-1){sentenceIndex++;currentIndex=sentenceIndex;readingStep=0;renderHeader();renderReading();showToast('Следующая буква — новая поэтическая строка.');}
  else{courseCompleted=true;renderReading();showToast('Все 39 букв пройдены! Теперь можно читать стихотворение.');}
 }
-function resetReading(){sentenceIndex=0;readingStep=0;courseCompleted=false;completedSentences.clear();renderReading();showToast('Урок начат заново');}
+function resetReading(){sentenceIndex=0;currentIndex=0;readingStep=0;courseCompleted=false;completedSentences.clear();renderHeader();renderReading();saveProgress();showToast('Урок начат заново');}
 function markLearned(){learned.add(currentLetter().hy);renderHeader();showToast(`Буква ${currentLetter().hy} отмечена изученной`);}
 function toggleReplacement(){replaceEnabled=!replaceEnabled;renderHeader();showToast(replaceEnabled?'Замена букв включена':'Замена букв выключена');}
 function togglePanel(){panelEnabled=!panelEnabled;renderHeader();showToast(panelEnabled?'Панель буквы включена':'Панель буквы скрыта');}
 function saveProfile(){const name=document.getElementById('profileName').value.trim()||'Ученик';document.querySelector('h1[data-translit="true"]').dataset.original=`Привет, ${name}! Շարունակենք`;applyTransliteration();showToast('Изменения сохранены в демо-интерфейсе');}
 function subscribeDemo(){subscriptionActive=true;renderHeader();showToast('Демо-доступ Premium включён — деньги не списаны');}
-function resetAll(){learned=new Set();currentIndex=0;sentenceIndex=0;readingStep=0;courseCompleted=false;completedSentences.clear();replaceEnabled=true;panelEnabled=true;subscriptionActive=false;renderHeader();showToast('Демонстрационные данные сброшены');}
+function resetAll(){learned=new Set();currentIndex=0;sentenceIndex=0;readingStep=0;courseCompleted=false;completedSentences.clear();replaceEnabled=true;panelEnabled=true;subscriptionActive=false;renderHeader();saveProgress();showToast('Демонстрационные данные сброшены');}
 let toastTimer;
 function showToast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400);}
 function initTelegramMiniApp(){
@@ -409,6 +539,7 @@ function initTelegramMiniApp(){
   }
  }catch(e){console.warn('Telegram Mini App initialization issue',e);}
 }
+loadProgress();
 initTelegramMiniApp();
 renderHeader();
 </script>
